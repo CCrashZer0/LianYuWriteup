@@ -16,11 +16,11 @@ Once the VM has been launched I am going to start scanning the box.
 Command: `nmap -T4 -sC -sV -oN nmap\scan.txt <ipaddress>`
 Command Breakdown:
 ```
-	-T4: speed of nmap scan is 4/5 (personal preference of mine)
+    -T4: speed of nmap scan is 4/5 (personal preference of mine)
 
     -sC: Scan with default NSE scripts. Considered useful for discovery and safe
 
-	-sV: Attempts to determine the version of the service running on port
+    -sV: Attempts to determine the version of the service running on port
 
     -oN: Normal output to the file normal.file
 ```
@@ -72,7 +72,7 @@ Command Breakdown:
 
     -t: Declare the amount of threds you want to use.
 
-	-w: Path to the wordlist used for brute forcing (use – for stdin).
+    -w: Path to the wordlist used for brute forcing (use – for stdin).
 ```
 ![gbIsland](images/gbIsland.png "gbIsland")
 It seems that where able to locat another directory. So lets go back to our broswer and see if we are able to navagate to it.  
@@ -87,7 +87,7 @@ Let's take a look at the hit that TryHackMe gives us.
 ![Hint2](images/Hint2.png "Hint2")  
 Our hit is "In numbers". After digging around on the internet a bit I was able to find the  [SecLists](https://github.com/danielmiessler/SecLists) repo maintained by Daniel Miessler, Jason Haddix, and g0tmi1k.  
 So I quickly did a git clone of the repository and decided to use one of the Fuzzing word list in combnation with GoBuster.  
-Commad: `gobuster dir -u http://$ip/island -t 40 -w /usr/share/dirbuster/wordlists/SecLists/Fuzzing/4-digits-0000-9999.txt` 
+Command: `gobuster dir -u http://<ip>/island -t 40 -w /usr/share/dirbuster/wordlists/SecLists/Fuzzing/4-digits-0000-9999.txt` 
 <br>
 
 ![2100](images/2100.png "2100")  
@@ -103,7 +103,7 @@ Just like the previous sties that we had found we are going to check the source 
 ![ticket](images/ticket.png "ticket")  
 At first glance it does not seem like anything in this codes is out of place but the more I looked at it the more the comment seemed out of place.  
 So I went back to our dear friend GoBuster and had it checked for `.ticket` extentions.  
-Command: `gobuster dir -u http://$ip/island/2100 -T 40 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -x .ticket`  
+Command: `gobuster dir -u http://<ip>/island/2100 -T 40 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -x .ticket`  
 ![gbTicket](images/gbTicket.png "gbTicket")  
 <br>
 When we go to open up the `green_arrow.ticket` in our browser we are given what looks like it could be an encoded password.  
@@ -120,7 +120,8 @@ Port 22 is our SSH port
 ## Compromise
 ---
 So we are going to use that username and password that we found and try to log into each port with them. Starting with the FTP.  
-Command: `ftp <ip address>`
+Command: `ftp <ip address>`  
+
 ![ftp](images/ftp.png "ftp")  
 
 Looks like we are able to log into FTP with the credentials that we found earlier.
